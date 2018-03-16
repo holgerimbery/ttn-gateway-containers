@@ -26,7 +26,7 @@ COPY --from=buildstep /usr/local/lib/libpaho-embed-* /usr/lib/
 COPY --from=buildstep /usr/lib/libttn* /usr/lib/
 
 COPY run.py ./
-COPY start.sh ./
 
-# run when container lands on device
-CMD ["bash", "start.sh"]
+WORKDIR /var/ttn
+
+CMD ["/opt/ttn-gateway/run.py"]
