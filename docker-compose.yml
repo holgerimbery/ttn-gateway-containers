@@ -1,0 +1,17 @@
+# Docker-compose file for TTN gateway
+
+# Version 2.1 for resin compatibility
+version: '2.1'
+services:
+  # The gateway itself
+  gateway:
+    build: gateway
+    image: ttn/pi-gateway
+    privileged: true
+    environment:
+      GW_EUI: "${GW_EUI}"
+      GW_KEY: "${GW_KEY}"
+      GW_ID: "${GW_ID}"
+      GW_LOGGER: "true"
+    devices:
+      - "/dev/mem:/dev/mem"
