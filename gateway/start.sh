@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python /opt/ttn-gateway/run.py
+cd /var/ttn
+/opt/ttn-gateway/run.py

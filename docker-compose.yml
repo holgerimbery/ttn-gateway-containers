@@ -8,6 +8,7 @@ services:
     build: gateway
     image: ttn/pi-gateway
     privileged: true
+    restart: always
     environment:
       GW_EUI: "${GW_EUI}"
       GW_KEY: "${GW_KEY}"
@@ -15,3 +16,12 @@ services:
       GW_LOGGER: "true"
     devices:
       - "/dev/mem:/dev/mem"
+    volumes:
+      - var_ttn_vol:/var/ttn
+
+volumes:
+  var_ttn_vol:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
