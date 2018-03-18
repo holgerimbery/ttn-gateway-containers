@@ -336,5 +336,6 @@ while True:
     GPIO.cleanup(22)
 
   # Start forwarder
+  sys.stdout.flush()
   subprocess.call(["/opt/ttn-gateway/mp_pkt_fwd", "-c", "/opt/ttn-gateway"])
   time.sleep(15)
