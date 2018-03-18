@@ -6,8 +6,9 @@ services:
   # The gateway itself
   gateway:
     build: gateway
-    image: ttn/pi-gateway
+    image: ttn/gateway
     privileged: true
+    network_mode: host
     restart: always
     environment:
       GW_EUI: "${GW_EUI}"
@@ -16,6 +17,25 @@ services:
       GW_LOGGER: "true"
     devices:
       - "/dev/mem:/dev/mem"
+    volumes:
+      - var_ttn_vol:/var/ttn
+  # Prometheus exporter
+  prom-exporter:
+    build: prom-exporter
+    image: ttn/prom-exporter
+    privileged: true
+    restart: always
+    # "link" is not supported in resin, we bind to localhost
+    ports:
+      - "127.0.0.1:9100:9100"
+  # TTN exporter
+  exporter:
+    build: exporter
+    image: ttn/exporter
+    privileged: true
+    # Exporter ned to access localhost to call prom-exporter
+    network_mode: host
+    restart: always
     volumes:
       - var_ttn_vol:/var/ttn
 
