@@ -1,0 +1,38 @@
+# Docker-compose file for TTN gateway
+
+# Version 2.1 for resin compatibility
+version: '2.1'
+services:
+  # The gateway itself
+  gateway:
+    build: gateway
+    image: ttn/gateway
+    privileged: true
+    network_mode: host
+    restart: always
+    environment:
+      GW_EUI: "${GW_EUI}"
+      GW_KEY: "${GW_KEY}"
+      GW_ID: "${GW_ID}"
+      GW_LOGGER: "true"
+    devices:
+      - "/dev/mem:/dev/mem"
+    volumes:
+      - var_ttn_vol:/var/ttn
+  # Collectd
+  collectd:
+    build: collectd
+    image: ttn/collectd
+    privileged: true
+    network_mode: host
+    restart: always
+    environment:
+      GW_COLLECTD_SERVER: "${GW_COLLECTD_SERVER}"
+      GW_BACKPLANE: "${GW_BACKPLANE}"
+
+volumes:
+  var_ttn_vol:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
