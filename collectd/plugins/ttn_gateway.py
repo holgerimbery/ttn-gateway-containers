@@ -51,9 +51,6 @@ def read():
     if last_time != gw_stats['time']:
         new_data = True
         last_time = gw_stats['time']
-        collectd.info('ttn_gw plugin: New data')
-    else:
-        collectd.info('ttn_gw plugin: Old data')
 
     current = gw_stats['current']
     keys = (
