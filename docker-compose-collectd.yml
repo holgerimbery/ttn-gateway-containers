@@ -29,6 +29,7 @@ services:
     environment:
       GW_COLLECTD_SERVER: "${GW_COLLECTD_SERVER}"
       GW_BACKPLANE: "${GW_BACKPLANE}"
+      GW_TTN_FAN: "${GW_TTN_FAN}"
     volumes:
       - var_ttn_vol:/var/ttn
   # Fan control for dbrgn's backplane

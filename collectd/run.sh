@@ -27,4 +27,10 @@ then
   sed -i 's/##MCP3425## //' "${ConfigPython}"
 fi
 
+if [ "${GW_TTN_FAN}" = "true" ]
+then
+  # Fan monitor
+  sed -i 's/##TTN_FAN## //' "${ConfigPython}"
+fi
+
 exec collectd -C "${Config}" -f
