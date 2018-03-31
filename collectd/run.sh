@@ -23,8 +23,8 @@ fi
 if [ "${GW_BACKPLANE}" = "DBRGN" ]
 then
   # Dbrgn's backplane: Enable voltage, temperature, humidity collection
-  sed -i 's/.*"sht21-usermode".*/\tImport "sht21-usermode"/' "${ConfigDbrgn}"
-  sed -i 's/.*"mcp3425".*/\tImport "mcp3425"/' "${ConfigDbrgn}"
+  sed -i 's/##SHT21## //' "${ConfigDbrgn}"
+  sed -i 's/##MCP3425## //' "${ConfigDbrgn}"
 fi
 
 exec collectd -C "${Config}" -f
