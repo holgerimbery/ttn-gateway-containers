@@ -14,7 +14,7 @@ stat_interval = 30
 
 
 def config(config):
-    global lock_file
+    global gw_stat_file
 
     for node in config.children:
         key = node.key.lower()
