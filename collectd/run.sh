@@ -3,7 +3,7 @@
 
 Config="/etc/collectd/collectd.conf"
 ConfigNetwork="/etc/collectd/collectd.conf.d/network.conf"
-ConfigDbrgn="/etc/collectd/collectd.conf.d/dbrgn.conf"
+ConfigPython="/etc/collectd/collectd.conf.d/python.conf"
 
 if [ "${RESIN}" = "1" ]
 then
@@ -23,8 +23,8 @@ fi
 if [ "${GW_BACKPLANE}" = "DBRGN" ]
 then
   # Dbrgn's backplane: Enable voltage, temperature, humidity collection
-  sed -i 's/##SHT21## //' "${ConfigDbrgn}"
-  sed -i 's/##MCP3425## //' "${ConfigDbrgn}"
+  sed -i 's/##SHT21## //' "${ConfigPython}"
+  sed -i 's/##MCP3425## //' "${ConfigPython}"
 fi
 
 exec collectd -C "${Config}" -f

@@ -11,6 +11,9 @@ WORKDIR /opt/ttn-collectd
 # Python plugins from DBRGN
 RUN git clone https://github.com/AmedeeBulle/collectd-python-plugins.git
 
+# Gateway stats plugin
+COPY plugins/* collectd-python-plugins/
+
 # Collectd config
 COPY collectd.conf /etc/collectd/
 COPY collectd.conf.d/* /etc/collectd/collectd.conf.d/
