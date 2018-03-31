@@ -31,6 +31,19 @@ services:
       GW_BACKPLANE: "${GW_BACKPLANE}"
     volumes:
       - var_ttn_vol:/var/ttn
+  # Fan control for dbrgn's backplane
+  fan:
+    build: fan
+    image: ttn/fan
+    privileged: true
+    network_mode: host
+    restart: always
+    environment:
+      GW_INFLUXDB_HOST: "${GW_INFLUXDB_HOST}"
+      GW_INFLUXDB_DBNAME: "${GW_INFLUXDB_DBNAME}"
+      GW_TARGET_TEMP: "${GW_TARGET_TEMP}"
+    volumes:
+      - var_ttn_vol:/var/ttn
 
 volumes:
   var_ttn_vol:
