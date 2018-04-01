@@ -27,7 +27,7 @@ if not os.path.exists("/opt/ttn-gateway/mp_pkt_fwd"):
   print ("ERROR: gateway executable not found. Is it built yet?")
   sys.exit(0)
 
-if os.environ.get('HALT') != None:
+if os.environ.get('HALT'):
   print ("*** HALT asserted - exiting ***")
   sys.exit(0)
 
@@ -36,10 +36,10 @@ print ("*** Resin Machine Info:")
 print ("*** Type: "+str(os.environ.get('RESIN_MACHINE_NAME')))
 print ("*** Arch: "+str(os.environ.get('RESIN_ARCH')))
 
-if os.environ.get("RESIN_HOST_CONFIG_core_freq")!=None:
+if os.environ.get("RESIN_HOST_CONFIG_core_freq"):
   print ("*** Core freq: "+str(os.environ.get('RESIN_HOST_CONFIG_core_freq')))
 
-if os.environ.get("RESIN_HOST_CONFIG_dtoverlay")!=None:
+if os.environ.get("RESIN_HOST_CONFIG_dtoverlay"):
   print ("*** UART mode: "+str(os.environ.get('RESIN_HOST_CONFIG_dtoverlay')))
 
 
@@ -49,7 +49,7 @@ print ("*******************")
 print ("*** Configuration:")
 print ("*******************")
 
-if os.environ.get("GW_EUI")==None:
+if not os.environ.get("GW_EUI"):
   # The FFFE should be inserted in the middle (so xxxxxxFFFExxxxxx)
   my_eui = format(uuid.getnode(), '012x')
   my_eui = my_eui[:6]+GWID_PREFIX+my_eui[6:]
@@ -69,12 +69,12 @@ frequency_plan_url = os.getenv('FREQ_PLAN_URL', "https://account.thethingsnetwor
 # Fetch config from TTN if TTN is enabled
 if(os.getenv('SERVER_TTN', "true")=="true"):
 
-  if os.environ.get("GW_ID")==None:
+  if not os.environ.get("GW_ID"):
     print ("ERROR: GW_ID required")
     print ("See https://www.thethingsnetwork.org/docs/gateways/registration.html#via-gateway-connector")
     sys.exit(0)
 
-  if os.environ.get("GW_KEY")==None:
+  if not os.environ.get("GW_KEY"):
     print ("ERROR: GW_KEY required")
     print ("See https://www.thethingsnetwork.org/docs/gateways/registration.html#via-gateway-connector")
     sys.exit(0)
@@ -307,7 +307,7 @@ while True:
   # Reset the gateway board - this only works for the Raspberry Pi.
   GPIO.setmode(GPIO.BOARD) # hardware pin numbers, just like gpio -1
 
-  if (os.environ.get("GW_RESET_PIN")!=None):
+  if os.environ.get("GW_RESET_PIN"):
     try:
       pin_number = int(os.environ.get("GW_RESET_PIN"))
       print ("[TTN Gateway]: Resetting concentrator on pin "+str(os.environ.get("GW_RESET_PIN")))
