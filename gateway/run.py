@@ -27,20 +27,28 @@ if not os.path.exists("/opt/ttn-gateway/mp_pkt_fwd"):
   print ("ERROR: gateway executable not found. Is it built yet?")
   sys.exit(0)
 
+if os.environ.get('RESIN'):
+  # Expunge unexpanded variables from docker-compose
+  for key,val in os.environ.items():
+    if key.startswith('GW_') and val.startswith('${'):
+      os.environ.pop(key)
+
 if os.environ.get('HALT'):
   print ("*** HALT asserted - exiting ***")
   sys.exit(0)
 
-# Show info about the machine we're running on
-print ("*** Resin Machine Info:")
-print ("*** Type: "+str(os.environ.get('RESIN_MACHINE_NAME')))
-print ("*** Arch: "+str(os.environ.get('RESIN_ARCH')))
+if os.environ.get('RESIN'):
+  # Show info about the machine we're running on
+  # Todo: Build variables do not exists at run time!
+  print ("*** Resin Machine Info:")
+  print ("*** Type: "+str(os.environ.get('RESIN_MACHINE_NAME')))
+  print ("*** Arch: "+str(os.environ.get('RESIN_ARCH')))
 
-if os.environ.get("RESIN_HOST_CONFIG_core_freq"):
-  print ("*** Core freq: "+str(os.environ.get('RESIN_HOST_CONFIG_core_freq')))
+  if os.environ.get("RESIN_HOST_CONFIG_core_freq"):
+    print ("*** Core freq: "+str(os.environ.get('RESIN_HOST_CONFIG_core_freq')))
 
-if os.environ.get("RESIN_HOST_CONFIG_dtoverlay"):
-  print ("*** UART mode: "+str(os.environ.get('RESIN_HOST_CONFIG_dtoverlay')))
+  if os.environ.get("RESIN_HOST_CONFIG_dtoverlay"):
+    print ("*** UART mode: "+str(os.environ.get('RESIN_HOST_CONFIG_dtoverlay')))
 
 
 # Check if the correct environment variables are set
