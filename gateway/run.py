@@ -309,6 +309,12 @@ with open('/opt/ttn-gateway/global_conf.json', 'w') as the_file:
   the_file.write(json.dumps(local_conf, indent=4))
 
 
+# Command line
+command_line = ["/opt/ttn-gateway/mp_pkt_fwd", "-c", "/opt/ttn-gateway"]
+if os.getenv("GW_SPI_SPEED"):
+  print("Setting SPI speed to {}".format(os.getenv("GW_SPI_SPEED")))
+  command_line.extend(["-s", os.getenv("GW_SPI_SPEED")])
+
 
 # Endless loop to reset and restart packet forwarder
 while True:
@@ -345,5 +351,5 @@ while True:
 
   # Start forwarder
   sys.stdout.flush()
-  subprocess.call(["/opt/ttn-gateway/mp_pkt_fwd", "-c", "/opt/ttn-gateway"])
+  subprocess.call(command_line)
   time.sleep(15)

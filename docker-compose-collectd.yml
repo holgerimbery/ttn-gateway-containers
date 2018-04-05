@@ -17,6 +17,7 @@ services:
       GW_ID: "${GW_ID:?Gateway Id is mandatory}"
       GW_EUI: "${GW_EUI}"
       GW_LOGGER: "${GW_LOGGER:-false}"
+      GW_SPI_SPEED: "${GW_SPI_SPEED}"
     devices:
       - "/dev/mem:/dev/mem"
     volumes:
