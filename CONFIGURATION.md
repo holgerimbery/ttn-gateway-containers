@@ -33,6 +33,8 @@
   * Forward packets with an invalid CRC.
 * GW_FWD_CRC_VAL optional - default true.
   * Forward packets with a valid CRC.
+* GW_DOWNSTREAM optional - default true.
+  * Globally enable (or disable) transmissions for this gateway.
 * GW_ANTENNA_GAIN optional - default 0.
   * Set this to the dBd gain of your antenna. The dBd value is the dBi value minus 2.15dB, ie. dBd = dBi-2.15. This is used to reduce the TX power of the concentrator to stay within the legal limits.
 * FREQ_PLAN_URL optional - default `https://account.thethingsnetwork.org/api/v2/frequency-plans/EU_863_870`
@@ -42,6 +44,8 @@
 All server variables are optional, but when a server is enabled, it is recommended to set all variables to configure it completely.
 * SERVER_TTN optional - default true
   Should the gateway connect to the TTN backend
+* SERVER_TTN_DOWNLINK - default true
+  Enable downlink transmissions for this server
   
 * SERVER_1_ENABLED optional - default false
 * SERVER_1_TYPE - default "semtech"

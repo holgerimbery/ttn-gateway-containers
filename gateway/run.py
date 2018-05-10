@@ -195,6 +195,10 @@ if(os.getenv('GW_FWD_CRC_VAL', "true")=="false"):
   #default is True
   gateway_conf['forward_crc_valid'] = False
 
+if(os.getenv('GW_DOWNSTREAM', "true")=="false"):
+  #default is True
+  gateway_conf['downstream'] = False
+
 # Parse GW_GPS env var. It is a string, we need a boolean.
 if(os.getenv('GW_GPS', "false")=="true"):
   gw_gps = True
@@ -234,6 +238,10 @@ if(os.getenv('SERVER_TTN', "true")=="true"):
   server['serv_gw_id'] = os.environ.get("GW_ID")
   server['serv_gw_key'] = os.environ.get("GW_KEY")
   server['serv_enabled'] = True
+  if(os.getenv('SERVER_TTN_DOWNLINK', "true")=="false"):
+    server['serv_down_enabled'] = False
+  else:
+    server['serv_down_enabled'] = True
   gateway_conf['servers'].append(server)
 else:
   if(os.getenv('SERVER_0_ENABLED', "false")=="true"):
