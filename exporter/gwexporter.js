@@ -26,6 +26,8 @@ var down_beacon_packets_queued = new Gauge('down_beacon_packets_queued', 'Beacon
 var down_beacon_packets_send = new Gauge('down_beacon_packets_send', 'Beacon packets send');
 var down_beacon_packets_rejected = new Gauge('down_beacon_packets_rejected', 'Beacon packets rejected');
 
+var temperature_cpu = new Gauge('temperature_cpu', 'CPU temperature');
+
 app.get("/metrics", (req, res) => {
     var start = new Date().getTime();
     var contents = fs.readFileSync('loragwstat.json');
@@ -45,6 +47,11 @@ app.get("/metrics", (req, res) => {
     down_beacon_packets_queued.set(jsonContent.current.down_beacon_packets_queued);
     down_beacon_packets_send.set(jsonContent.current.down_beacon_packets_send);
     down_beacon_packets_rejected.set(jsonContent.current.down_beacon_packets_rejected);
+    
+    var temperature = fs.readFileSync('/sys/class/thermal/thermal_zone0/temp');
+    var tempInt = parseInt(temperature);
+    tempInt = tempInt / 1000.0;
+    temperature_cpu.set(tempInt);
 
     http.get('http://localhost:9100/metrics', (resp) => {
       var data = '';
