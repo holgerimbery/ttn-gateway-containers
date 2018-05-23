@@ -1,3 +1,6 @@
+TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi.svg?branch=master)](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi)
+======================
+
 # Introduction
 This resin.io setup is based on the [Multi-protocol Packet Forwarder by Jac Kersing](https://github.com/kersing/packet_forwarder/tree/master/mp_pkt_fwd).
 
