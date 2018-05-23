@@ -11,6 +11,8 @@ install:
 script:
   # Ensure we can build ARM images
   - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+  # Use the .env template to provide defaults during build
+  - cp .env-distr .env
   # Build images
   - docker-compose build
   - docker-compose -f docker-compose-collectd.yml build
