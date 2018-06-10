@@ -8,7 +8,7 @@ services:
   # The gateway itself
   gateway:
     build: gateway
-    image: amedee/ttn-gateway
+    image: amedee/ttn-gateway-zero
     privileged: true
     network_mode: host
     restart: always
@@ -25,7 +25,7 @@ services:
   # Collectd
   collectd:
     build: collectd
-    image: amedee/ttn-collectd
+    image: amedee/ttn-collectd-zero
     privileged: true
     network_mode: host
     restart: always
@@ -38,7 +38,7 @@ services:
   # Fan control for dbrgn's backplane
   fan:
     build: fan
-    image: amedee/ttn-fan
+    image: amedee/ttn-fan-zero
     privileged: true
     network_mode: host
     restart: always

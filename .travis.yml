@@ -31,7 +31,7 @@ script:
     docker run --rm "${IMAGE}" /opt/ttn-gateway/mp_pkt_fwd || true
   # Push images to the docker hub for the master branch
   - |
-    if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]
+    if [ "${TRAVIS_BRANCH}" == "master" -o "${TRAVIS_BRANCH}" == "zero" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]
     then
       docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
       IMAGE=$(docker-compose config | yq -r .services.gateway.image)

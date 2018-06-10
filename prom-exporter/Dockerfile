@@ -1,11 +1,11 @@
-FROM resin/raspberrypi3-debian:jessie
+FROM resin/raspberry-pi-debian:jessie
 
 # Defines our working directory in container
 WORKDIR /opt/node-exporter
 
 # Get Prometheus exporter
 ARG NODE_EXPORTER_VERSION=0.12.0
-ARG DIST_ARCH=linux-armv7
+ARG DIST_ARCH=linux-armv6
 
 RUN curl -sSL https://github.com/prometheus/node_exporter/releases/download/${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.${DIST_ARCH}.tar.gz \
 	| tar xzf - --strip 1

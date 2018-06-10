@@ -8,7 +8,7 @@ services:
   # The gateway itself
   gateway:
     build: gateway
-    image: amedee/ttn-gateway
+    image: amedee/ttn-gateway-zero
     privileged: true
     network_mode: host
     restart: always
@@ -24,7 +24,7 @@ services:
   # Prometheus exporter
   prom-exporter:
     build: prom-exporter
-    image: amedee/ttn-prom-exporter
+    image: amedee/ttn-prom-exporter-zero
     privileged: true
     restart: always
     # "link" is not supported in resin, we bind to localhost
@@ -33,7 +33,7 @@ services:
   # TTN exporter
   exporter:
     build: exporter
-    image: amedee/ttn-exporter
+    image: amedee/ttn-exporter-zero
     privileged: true
     # Exporter ned to access localhost to call prom-exporter
     network_mode: host

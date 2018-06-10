@@ -1,4 +1,4 @@
-FROM resin/raspberrypi3-node
+FROM resin/raspberry-pi-node
 
 # Defines our working directory in container
 WORKDIR /opt/ttn-exporter
