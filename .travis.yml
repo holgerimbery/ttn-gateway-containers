@@ -29,13 +29,18 @@ script:
     IMAGE=$(docker-compose config | yq -r .services.gateway.image)
     echo "Gateway image is: ${IMAGE}"
     docker run --rm "${IMAGE}" /opt/ttn-gateway/mp_pkt_fwd || true
-  # Push images to the docker hub for the master branch
+  # Push images to the docker hub for all branches, only master is latest
   - |
-    if [ "${TRAVIS_BRANCH}" == "master" ] && [ "${TRAVIS_PULL_REQUEST}" == "false" ]
+    if [ "${TRAVIS_PULL_REQUEST}" == "false" ]
     then
       docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
       IMAGE=$(docker-compose config | yq -r .services.gateway.image)
-      TAG=$(docker run --rm "${IMAGE}" /opt/ttn-gateway/mp_pkt_fwd | awk '/Version:/ && NF==2 {print $NF}')
+      if [ "${TRAVIS_BRANCH}" == "master" ]
+      then
+        TAG=$(docker run --rm "${IMAGE}" /opt/ttn-gateway/mp_pkt_fwd | awk '/Version:/ && NF==2 {print $NF}')
+      else
+        TAG="${TRAVIS_BRANCH}"
+      fi
       IMAGES_PROMETHEUS=$(docker-compose config | yq -r '.services | .[].image')
       IMAGES_COLLECTD=$(docker-compose -f docker-compose-collectd.yml config | yq -r '.services | .[].image')
       for IMAGE in ${IMAGES_PROMETHEUS} ${IMAGES_COLLECTD}
@@ -43,6 +48,8 @@ script:
       echo "Pushing ${IMAGE} to the docker hub; Tag: ${TAG}"
         docker tag "${IMAGE}" "${IMAGE}:${TAG}"
         docker push "${IMAGE}:${TAG}"
-        docker push "${IMAGE}"
-      done
+        if [ "${TRAVIS_BRANCH}" == "master" ]
+        then
+          docker push "${IMAGE}"
+        done
     fi
