@@ -1,5 +1,5 @@
 # Fan control for DBRGN's backplane
-FROM resin/raspberrypi3-debian:jessie
+FROM resin/raspberrypi3-debian:stretch
 
 RUN apt-get update && \
     apt-get install git python-pip python-rpi.gpio && \

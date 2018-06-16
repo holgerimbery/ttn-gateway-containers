@@ -1,4 +1,4 @@
-FROM resin/raspberrypi3-debian:jessie
+FROM resin/raspberrypi3-debian:stretch
 
 # Defines our working directory in container
 WORKDIR /opt/node-exporter

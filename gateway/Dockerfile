@@ -1,6 +1,6 @@
 # Build as non-resin for now
 # FROM resin/%%RESIN_MACHINE_NAME%%-debian:latest AS buildstep
-FROM resin/raspberrypi3-debian:jessie AS buildstep
+FROM resin/raspberrypi3-debian:stretch AS buildstep
 
 WORKDIR /opt/ttn-gateway/
 
@@ -12,7 +12,7 @@ COPY dev dev
 RUN ./dev/build.sh
 
 # FROM resin/%%RESIN_MACHINE_NAME%%-debian:latest
-FROM resin/raspberrypi3-debian:jessie
+FROM resin/raspberrypi3-debian:stretch
 
 WORKDIR /opt/ttn-gateway
 
