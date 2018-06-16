@@ -45,11 +45,12 @@ script:
       IMAGES_COLLECTD=$(docker-compose -f docker-compose-collectd.yml config | yq -r '.services | .[].image')
       for IMAGE in ${IMAGES_PROMETHEUS} ${IMAGES_COLLECTD}
       do
-      echo "Pushing ${IMAGE} to the docker hub; Tag: ${TAG}"
+        echo "Pushing ${IMAGE} to the docker hub; Tag: ${TAG}"
         docker tag "${IMAGE}" "${IMAGE}:${TAG}"
         docker push "${IMAGE}:${TAG}"
         if [ "${TRAVIS_BRANCH}" == "master" ]
         then
           docker push "${IMAGE}"
-        done
+        fi
+      done
     fi
