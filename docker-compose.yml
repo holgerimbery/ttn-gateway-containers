@@ -7,7 +7,10 @@ version: '2.1'
 services:
   # The gateway itself
   gateway:
-    build: gateway
+    build:
+      context: gateway
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-gateway
     privileged: true
     network_mode: host
@@ -23,7 +26,10 @@ services:
       - var_ttn_vol:/var/ttn
   # Prometheus exporter
   prom-exporter:
-    build: prom-exporter
+    build:
+      context: prom-exporter
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-prom-exporter
     privileged: true
     restart: always
@@ -32,10 +38,13 @@ services:
       - "127.0.0.1:9100:9100"
   # TTN exporter
   exporter:
-    build: exporter
+    build:
+      context: exporter
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-exporter
     privileged: true
-    # Exporter ned to access localhost to call prom-exporter
+    # Exporter need to access localhost to call prom-exporter
     network_mode: host
     restart: always
     volumes:

@@ -1,0 +1,22 @@
+# Prometheus gateway exporter
+ARG GW_MACHINE_NAME
+
+FROM resin/${GW_MACHINE_NAME:-%%RESIN_MACHINE_NAME%%}-node
+
+# Defines our working directory in container
+WORKDIR /opt/ttn-exporter
+
+# Copies the package.json first for better cache on later pushes
+COPY package.json package.json
+
+# Install npm dependencies
+RUN npm install
+
+# Copy the app
+COPY gwexporter.js ./
+
+WORKDIR /var/ttn
+EXPOSE 80
+
+# run when container starts up on the device
+CMD ["node", "/opt/ttn-exporter/gwexporter.js"]

@@ -7,7 +7,10 @@ version: '2.1'
 services:
   # The gateway itself
   gateway:
-    build: gateway
+    build:
+      context: gateway
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-gateway
     privileged: true
     network_mode: host
@@ -24,7 +27,10 @@ services:
       - var_ttn_vol:/var/ttn
   # Collectd
   collectd:
-    build: collectd
+    build:
+      context: collectd
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-collectd
     privileged: true
     network_mode: host
@@ -37,7 +43,10 @@ services:
       - var_ttn_vol:/var/ttn
   # Fan control for dbrgn's backplane
   fan:
-    build: fan
+    build:
+      context: fan
+      args:
+        GW_MACHINE_NAME:
     image: amedee/ttn-fan
     privileged: true
     network_mode: host
