@@ -1,8 +1,53 @@
 TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi.svg?branch=master)](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi)
 ======================
 
+# Contents
+<!-- TOC START min:1 max:3 link:true update:false -->
+- [Introduction](#introduction)
+  - [Difference between Poly-packet-forwarder and Multi-protocol-packet-forwarder](#difference-between-poly-packet-forwarder-and-multi-protocol-packet-forwarder)
+- [Resin.io TTN Gateway Connector for Raspberry Pi](#resinio-ttn-gateway-connector-for-raspberry-pi)
+  - [Prerequisites](#prerequisites)
+  - [Create a resin.io application](#create-a-resinio-application)
+  - [Configure the gateway device](#configure-the-gateway-device)
+    - [Device environment variables - no GPS](#device-environment-variables---no-gps)
+    - [Device environment variables - with GPS](#device-environment-variables---with-gps)
+  - [Reset pin values](#reset-pin-values)
+  - [Special note for using a Raspberry Pi 3](#special-note-for-using-a-raspberry-pi-3)
+    - [Application config variables](#application-config-variables)
+  - [Transferring TTN Gateway software to resin so that it may be downloaded on your devices](#transferring-ttn-gateway-software-to-resin-so-that-it-may-be-downloaded-on-your-devices)
+  - [Troubleshooting ##](#troubleshooting-)
+  - [Pro Tips](#pro-tips)
+  - [Device statistics](#device-statistics)
+    - [Prometheus](#prometheus)
+    - [Collectd](#collectd)
+- [Docker setup](#docker-setup)
+  - [Prepare the Raspberry Pi](#prepare-the-raspberry-pi)
+  - [Get the containers](#get-the-containers)
+    - [Option 1: Download the containers](#option-1-download-the-containers)
+    - [Option 2: Re-Build the containers](#option-2-re-build-the-containers)
+  - [Configure and run the TTN Gateway](#configure-and-run-the-ttn-gateway)
+  - [Updates](#updates)
+- [Credits](#credits)
+
+<!-- TOC END -->
+
 # Introduction
-This resin.io setup is based on the [Multi-protocol Packet Forwarder by Jac Kersing](https://github.com/kersing/packet_forwarder/tree/master/mp_pkt_fwd).
+This is a Docker setup for a TTN Gateway Connector on Raspberry Pi.  
+It can be run with [resin.io](https://resin.io/) or as _Plain Docker_ on Raspbian.
+
+The setup is made of multiple containers:
+- `gateway`: runs the [Multi-protocol Packet Forwarder by Jac Kersing](https://github.com/kersing/packet_forwarder/tree/master/mp_pkt_fwd).
+- If you use [Prometheus](https://prometheus.io/) monitoring:
+  - `prom-exporter`: the [Prometheus](https://prometheus.io/) exporter
+  - `exporter`: exporter add-on for the gateway statistics
+- If you use [collectd](https://collectd.org/) monitoring:
+  - `collectd`: the collectd daemon, with a gateway monitoring plugin
+  - `fan`: fan controller (optional)
+
+The build will use the latest Multi-protocol Packet Forwarder release.
+
+Note that the [resin.io](https://resin.io/) setup only runs on Raspberry Pi 3B(+), as [resin.io](https://resin.io/) only supports multi-containers on these platforms.  
+The _Plain Docker_ setup on Raspbian runs on any Raspberry Pi, including the Zero.
 
 An alternative guide to use this Resin.io setup can be found in the official TTN documentation at: https://www.thethingsnetwork.org/docs/gateways/rak831/
 
@@ -90,7 +135,7 @@ after resin.io is finished downloading the application, or when restarting the g
 
 ## Special note for using a Raspberry Pi 3
 
-There is a backward incomatibility between the Raspberry Pi 1 and 2 hardware, and Raspberry Pi 3.  For Raspberry Pi 3, it is necessary to make a small additional configuration change.
+There is a backward incompatibility between the Raspberry Pi 1 and 2 hardware, and Raspberry Pi 3.  For Raspberry Pi 3, it is necessary to make a small additional configuration change.
 
 Click <- to go back to the Device List, and note that on the left there is an option called "Fleet Configuration".  Click it.
 
@@ -103,12 +148,12 @@ Name      	            	    | Value
 RESIN_HOST_CONFIG_core_freq   | 250
 RESIN_HOST_CONFIG_dtoverlay   | pi3-miniuart-bt
 
-## TRANSFERRING TTN GATEWAY SOFTWARE TO RESIN SO THAT IT MAY BE DOWNLOADED ON YOUR DEVICES
+## Transferring TTN Gateway software to resin so that it may be downloaded on your devices
 
 1. On your computer, clone this git repo. For example in a terminal on Mac or Linux type:
 
    ```bash
-   git clone https://github.com/jpmeijers/ttn-resin-gateway-rpi.git
+   git clone https://github.com/AmedeeBulle/ttn-resin-gateway-rpi.git
    cd ttn-resin-gateway-rpi/
    ```
 2. Now, type the command that you'll see displayed in the edit control in the upper-right corner of the Resin devices dashboard for your device. This command "connects" your local directory to the resin GIT service, which uses GIT to "receive" the gateway software from TTN, and it looks something like this:
@@ -118,27 +163,35 @@ RESIN_HOST_CONFIG_dtoverlay   | pi3-miniuart-bt
    ```
 
 3. Add your SSH public key to the list at https://dashboard.resin.io/preferences/sshkeys. You may need to search the internet how to create a SSH key on your operating system, where to find it afterwards, copy the content, and paste the content to the resin.io console.
-   
-4. Type the following commands into your terminal to "push" the TTN files up to resin.io:
+
+4. Choose your monitoring backend.  
+If you use [Prometheus](https://prometheus.io/) or if you don't have a monitoring backend you are all set!  
+If you prefer [collectd](https://collectd.org/), you need to rename the _docker-compose_ files:
+
+  ```bash
+  mv docker-compose.yml docker-compose-prometheus.yml
+  mv docker-compose-collectd.yml docker-compose.yml
+  ```
+
+5. Type the following commands into your terminal to "push" the TTN files up to resin.io:
 
    ```bash
    git add .
    git commit -m "first upload of ttn files to resin"
    git push -f resin master
    ```
-   
-5. What you'll now see happening in terminal is that this "git push" does an incredible amount of work:
-  1. It will upload a Dockerfile, a "build script", and a "run script" to resin
-  2. It will start to do a "docker build" using that Dockerfile, running it within a QEMU ARM virtual machine on the resin service.
-  3. In processing this docker build, it will run a "build.sh" script that downloads and builds the packet forwarder executable from source code, for RPi+iC880A-SPI.
+
+6. What you'll now see happening in terminal is that this "git push" does an incredible amount of work:
+  1. It will upload a docker-compose file and build scripts to resin
+  2. It will start to do a "docker-compose build" using that docker-compose file, running it within a QEMU ARM virtual machine on the resin service.
+  3. In processing this docker build, it will run a build script that downloads and builds the packet forwarder executable from source code, for RPi+iC880A-SPI.
   4. When the build is completed, you'll see a unicorn &#x1f984; ASCII graphic displayed in your terminal.
 
-6. Now, switch back to your device dashboard, you'll see that your Raspberry Pi is now "updating" by pulling the Docker container from the resin.io service.  Then, after "updating", you'll see the gateway's log file in the window at the lower right corner.  You'll see it initializing, and will also see log output each time a packet is forwarded to TTN.  You're done!
-
+7. Now, switch back to your device dashboard, you'll see that your Raspberry Pi is now "updating" by pulling the Docker containers from the resin.io service.  Then, after "updating", you'll see the gateway's log file in the window at the lower right corner.  You'll see it initializing, and will also see log output each time a packet is forwarded to TTN.  You're done!
 
 
 ## Troubleshooting ##
-If you get the error below please check if your ssh public key has been added to you resin account. In addition verify whether your private key has the correct permissions (i.e. chmod 400 ~/.ssh/id_rsa). 
+If you get the error below please check if your ssh public key has been added to you resin account. In addition verify whether your private key has the correct permissions (i.e. chmod 400 ~/.ssh/id_rsa).
 
   ```bash
   $ git push -f resin master
@@ -149,8 +202,8 @@ If you get the error below please check if your ssh public key has been added to
   and the repository exists.
   $
   ```
-  
-# Pro Tips
+
+## Pro Tips
 
 - At some point if you would like to add a second gateway, third gateway, or a hundred gateways, all you need to do is to add a new device to your existing Application. You needn't upload any new software to Resin, because Resin already knows what software belongs on the gateway. So long as the environment variables are configured correctly for that new device, it'll be up and running immediately after you burn an SD card and boot it.
 
@@ -165,17 +218,116 @@ If you get the error below please check if your ssh public key has been added to
 
 - For devices without a GPS, the location that is configured on the TTN console is used. This location is only read at startup of the gateway. Therefore, after you set or changed the location, restart the application from the resin.io console.
 
-# Device statistics
-If you want to show nice looking statistics for your gateway(s) there are a couple of additional steps to take. First, copy `Dockerfile.template.metering` to `Dockerfile.template`. Next copy `start.sh.metering` to `start.sh`. Now use the instructions above to update the resin image.
+## Device statistics
+If you want to show nice looking statistics for your gateway(s) there are a couple of additional steps to take.
 
+### Prometheus
 Once the new image is deployed, go to the resin.io dashboard for your devices and select 'Enable Public device URL' in the drop down menu (the one to the right of the light bulb). That is all that is required to provide metrics. Now you will need to install a metrics collector on a seperate system as outlined in [Fleet-wide Machine Metrics Monitoring in 20mins](https://resin.io/blog/prometheusv2/).
 
 (To show packet forwarder graphs you need to add your own graphs to the provided templates)
+
+### Collectd
+[Collectd](https://collectd.org/) will typically send its data to an InfluxDB/Grafana backend.  
+You will need to define the following variables in resin.io
+
+Name      	  	    | Value  
+--------------------|--------------------------
+GW_COLLECTD_SERVER  | The IP address of the collectd server
+GW_BACKPLANE        | Set to "DBRGN" if you use the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane with sensors
+GW_TTN_FAN          | Set to "true" if you have a fan controlled by the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane
+GW_TARGET_TEMP      | Target for temperature regulation with the fan (Default 45°C)
+
+# Docker setup
+If you do not want to use the [resin.io](https://resin.io/) services, you can run the exact same configuration directly on your Raspberry Pi.
+
+## Prepare the Raspberry Pi
+Download and install [Raspbian Stretch Lite](https://www.raspberrypi.org/downloads/raspbian/) to your Pi (Follow the instructions from the Foundation).  
+Although it will work with the full _Desktop_ environment, I strongly recommend the _Lite_ version.
+
+Using `raspi-config` enable SPI and I2C (if needed for your backplane).
+
+On raspberry Pi 3B(+), add the following lines to `/boot/config.txt`:
+```
+core_freq=250
+dtoverlay=pi3-miniuart-bt
+```
+
+As root, install `git`, `docker` and `docker-compose`:
+```
+# apt-get update
+# apt-get install git curl python-pip
+# curl -sSL https://get.docker.com | sh
+# pip install docker-compose
+```
+Ensure your linux user (`pi` or whatever you choose) is in the `docker` group:
+```
+# usermod -a -G docker <YourLinuxUser>
+```
+At this point you need to completely logout and re-login to activate the new group.
+
+From here, __you don't need root access anymore__.
+
+Clone this repository:
+```
+$ git clone https://github.com/AmedeeBulle/ttn-resin-gateway-rpi.git
+$ cd ttn-resin-gateway-rpi/
+```
+
+There are two _docker-compose_ files:
+- `docker-compose.yml`: [Prometheus](https://prometheus.io/) monitoring (or no monitoring).  
+This is the default.
+- `docker-compose-collectd.yml`: [collectd](https://collectd.org/) monitoring.  
+Use `-f docker-compose-collectd.yml` `docker-compose` parameter to use this configuration.
+
+## Get the containers
+You have 2 options: download the pre-build containers or re-build them.
+
+### Option 1: Download the containers
+This is the easiest and fastest way. It is also the recommended way on the Raspberry Pi Zero as a build will take quite some time!  
+The `pull` command will download the containers from the Docker Hub:
+```
+$ docker-compose [-f docker-compose-collectd.yml] pull
+```
+
+__Note for Raspberry Pi Zero__: _multiarch_ build does not work properly on ARM variants (See https://github.com/moby/moby/issues/34875 ).  
+For the Raspberry Zero you need to amend the _docker-compose_ files to pull the correct images:
+```
+$ sed -e 's/\(image:.*\)/\1:arm32v6-latest/' -i.orig docker-compose*.yml
+```
+
+### Option 2: Re-Build the containers
+If for whatever reason you want to re-build the containers on your Pi, run:
+```
+$ docker-compose [-f docker-compose-collectd.yml] build
+```
+
+## Configure and run the TTN Gateway
+To customise your setup, create a file named `.env` with the environment variables described in the [resin.io](https://resin.io/) section. Use the file `.env-distr` as template.
+
+Run the TTN Gateway:
+```
+$ docker-compose [-f docker-compose-collectd.yml] up
+```
+This will start the containers and remain attached to your terminal. If everything looks good, you can cancel it and restart the service in detached mode:
+```
+$ docker-compose [-f docker-compose-collectd.yml] up -d
+```
+This will keep he containers running, even after a reboot.
+
+## Updates
+To update your setup with a newer version, get the latest code and containers and restart the service:
+```
+$ docker-compose [-f docker-compose-collectd.yml] down
+$ git pull origin master
+$ docker-compose [-f docker-compose-collectd.yml] pull # or build
+$ docker-compose [-f docker-compose-collectd.yml] up
+```
 
 # Credits
 
 * [Gonzalo Casas](https://github.com/gonzalocasas) on the [iC880a-based gateway](https://github.com/ttn-zh/ic880a-gateway/tree/spi)
 * [Ruud Vlaming](https://github.com/devlaam) on the [Lorank8 installer](https://github.com/Ideetron/Lorank)
 * [Jac Kersing](https://github.com/kersing) on the [Multi-protocol packet forwarder](https://github.com/kersing/packet_forwarder/tree/master/mp_pkt_fwd)
+* [JP Meijers](https://github.com/jpmeijers/ttn-resin-gateway-rpi) on the latest ResinIO setup
 * [Ray Ozzie](https://github.com/rayozzie/ttn-resin-gateway-rpi) on the original ResinIO setup
 * [The Team](https://resin.io/team/) at resin.io
