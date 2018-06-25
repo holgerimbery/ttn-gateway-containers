@@ -46,9 +46,6 @@ The setup is made of multiple containers:
 
 The build will use the latest Multi-protocol Packet Forwarder release.
 
-Note that the [resin.io](https://resin.io/) setup only runs on Raspberry Pi 3B(+), as [resin.io](https://resin.io/) only supports multi-containers on these platforms.  
-The _Plain Docker_ setup on Raspbian runs on any Raspberry Pi, including the Zero.
-
 An alternative guide to use this Resin.io setup can be found in the official TTN documentation at: https://www.thethingsnetwork.org/docs/gateways/rak831/
 
 ## Difference between Poly-packet-forwarder and Multi-protocol-packet-forwarder
