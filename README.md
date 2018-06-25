@@ -162,12 +162,13 @@ RESIN_HOST_CONFIG_dtoverlay   | pi3-miniuart-bt
 3. Add your SSH public key to the list at https://dashboard.resin.io/preferences/sshkeys. You may need to search the internet how to create a SSH key on your operating system, where to find it afterwards, copy the content, and paste the content to the resin.io console.
 
 4. Choose your monitoring backend.  
-If you use [Prometheus](https://prometheus.io/) or if you don't have a monitoring backend you are all set!  
-If you prefer [collectd](https://collectd.org/), you need to rename the _docker-compose_ files:
+There are 2 _docker-compose_ files:
+  - `docker-compose-prometheus.yml` if you want use [Prometheus](https://prometheus.io/) or if you don't have a monitoring backend;
+  - `docker-compose-collectd.yml` if you prefer [collectd](https://collectd.org/).
 
+  Copy the selected file to `docker-compose.yml`
   ```bash
-  mv docker-compose.yml docker-compose-prometheus.yml
-  mv docker-compose-collectd.yml docker-compose.yml
+  cp docker-compose-<Your Backend>.yml docker-compose.yml
   ```
 
 5. Type the following commands into your terminal to "push" the TTN files up to resin.io:
@@ -271,10 +272,13 @@ $ cd ttn-resin-gateway-rpi/
 ```
 
 There are two _docker-compose_ files:
-- `docker-compose.yml`: [Prometheus](https://prometheus.io/) monitoring (or no monitoring).  
-This is the default.
-- `docker-compose-collectd.yml`: [collectd](https://collectd.org/) monitoring.  
-Use `-f docker-compose-collectd.yml` `docker-compose` parameter to use this configuration.
+- `docker-compose-prometheus.yml`: [Prometheus](https://prometheus.io/) monitoring (or no monitoring).
+- `docker-compose-collectd.yml`: [collectd](https://collectd.org/) monitoring.
+
+Copy the selected file to `docker-compose.yml`
+```bash
+cp docker-compose-<Your Backend>.yml docker-compose.yml
+```
 
 ## Get the containers
 You have 2 options: download the pre-build containers or re-build them.
@@ -283,19 +287,19 @@ You have 2 options: download the pre-build containers or re-build them.
 This is the easiest and fastest way. It is also the recommended way on the Raspberry Pi Zero as a build will take quite some time!  
 The `pull` command will download the containers from the Docker Hub:
 ```
-$ docker-compose [-f docker-compose-collectd.yml] pull
+$ docker-compose pull
 ```
 
 __Note for Raspberry Pi Zero__: _multiarch_ build does not work properly on ARM variants (See https://github.com/moby/moby/issues/34875 ).  
 For the Raspberry Zero you need to amend the _docker-compose_ files to pull the correct images:
 ```
-$ sed -e 's/\(image:.*\)/\1:arm32v6-latest/' -i.orig docker-compose*.yml
+$ sed -e 's/\(image:.*\)/\1:arm32v6-latest/' -i.orig docker-compose.yml
 ```
 
 ### Option 2: Re-Build the containers
 If for whatever reason you want to re-build the containers on your Pi, run:
 ```
-$ docker-compose [-f docker-compose-collectd.yml] build
+$ docker-compose build
 ```
 
 ## Configure and run the TTN Gateway
@@ -303,21 +307,21 @@ To customise your setup, create a file named `.env` with the environment variabl
 
 Run the TTN Gateway:
 ```
-$ docker-compose [-f docker-compose-collectd.yml] up
+$ docker-compose up
 ```
 This will start the containers and remain attached to your terminal. If everything looks good, you can cancel it and restart the service in detached mode:
 ```
-$ docker-compose [-f docker-compose-collectd.yml] up -d
+$ docker-compose up -d
 ```
 This will keep he containers running, even after a reboot.
 
 ## Updates
 To update your setup with a newer version, get the latest code and containers and restart the service:
 ```
-$ docker-compose [-f docker-compose-collectd.yml] down
+$ docker-compose down
 $ git pull origin master
-$ docker-compose [-f docker-compose-collectd.yml] pull # or build
-$ docker-compose [-f docker-compose-collectd.yml] up
+$ docker-compose pull # or build
+$ docker-compose up
 ```
 
 # Credits

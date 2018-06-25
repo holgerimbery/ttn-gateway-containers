@@ -11,7 +11,7 @@ then
   if [ "${TRAVIS_BRANCH}" == "master" ]
   then
     # For the master branch we tag with the packet forwarded version
-    IMAGE=$(docker-compose config | yq -r .services.gateway.image)
+    IMAGE=$(docker-compose -f docker-compose-prometheus.yml config | yq -r .services.gateway.image)
     TAG=$(docker run --rm "${IMAGE}" /opt/ttn-gateway/mp_pkt_fwd | awk '/Version:/ && NF==2 {print $NF}')
   else
     # Otherwhise we just take the branch name
@@ -27,7 +27,7 @@ then
   fi
 
   # Process all images
-  IMAGES_PROMETHEUS=$(docker-compose config | yq -r '.services | .[].image')
+  IMAGES_PROMETHEUS=$(docker-compose -f docker-compose-prometheus.yml config | yq -r '.services | .[].image')
   IMAGES_COLLECTD=$(docker-compose -f docker-compose-collectd.yml config | yq -r '.services | .[].image')
   for IMAGE in ${IMAGES_PROMETHEUS} ${IMAGES_COLLECTD}
   do
