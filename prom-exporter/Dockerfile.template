@@ -11,7 +11,7 @@ ARG NODE_EXPORTER_VERSION=0.16.0
 ARG DIST_ARCH=linux-armv7
 
 RUN if [ "$(arch)" = "armv6l" ] ; then DIST_ARCH=linux-armv6; fi && \
-    curl -sSL https://github.com/prometheus/node_exporter/releases/download/${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.${DIST_ARCH}.tar.gz \
+    curl -sSL https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.${DIST_ARCH}.tar.gz \
 	| tar xzf - --strip 1
 
 # Default port for the exporter is 9100
