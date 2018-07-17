@@ -39,6 +39,8 @@
   * Set this to the dBd gain of your antenna. The dBd value is the dBi value minus 2.15dB, ie. dBd = dBi-2.15. This is used to reduce the TX power of the concentrator to stay within the legal limits.
 * FREQ_PLAN_URL optional - default `https://account.thethingsnetwork.org/api/v2/frequency-plans/EU_863_870`
   * The URL where the base configuration file and frequency plan should be downloaded from. This is overwritten by the URL given by the TTN account server when using the TTN gateway connector protocol.
+* GW_SPI_SPEED optional - default 8000000.
+  * The SPI bus speed in Herz to use to communicate with the concentrator.
 
 ## Server variables
 All server variables are optional, but when a server is enabled, it is recommended to set all variables to configure it completely.
