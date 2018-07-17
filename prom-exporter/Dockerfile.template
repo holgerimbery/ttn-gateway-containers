@@ -7,7 +7,7 @@ FROM resin/${GW_MACHINE_NAME:-%%RESIN_MACHINE_NAME%%}-debian:stretch
 WORKDIR /opt/node-exporter
 
 # Get Prometheus exporter
-ARG NODE_EXPORTER_VERSION=0.12.0
+ARG NODE_EXPORTER_VERSION=0.16.0
 ARG DIST_ARCH=linux-armv7
 
 RUN if [ "$(arch)" = "armv6l" ] ; then DIST_ARCH=linux-armv6; fi && \
