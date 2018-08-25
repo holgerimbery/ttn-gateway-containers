@@ -48,6 +48,10 @@ All server variables are optional, but when a server is enabled, it is recommend
   Should the gateway connect to the TTN backend
 * SERVER_TTN_DOWNLINK - default true
   Enable downlink transmissions for this server
+* ACCOUNT_SERVER_DOMAIN optional - default `account.thethingsnetwork.org`
+  Domain of the account server to fetch the information from
+* ROUTER_MQTT_ADDRESS optional
+  Override the address of the MQTT broker to connect to - e.g. `router.eu.thethings.network:1883`
   
 * SERVER_1_ENABLED optional - default false
 * SERVER_1_TYPE - default "semtech"
