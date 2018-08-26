@@ -202,6 +202,12 @@ if(os.getenv('GW_LOGGER', "false")=="true"):
 else:
   gateway_conf['logger'] = False
 
+if(os.getenv('GW_PRINT_STATS', "true")=="true"):
+  # Default is true for upstream compatibility
+  gateway_conf['stat_print'] = True
+else:
+  gateway_conf['stat_print'] = False
+
 if(os.getenv('GW_FWD_CRC_ERR', "false")=="true"):
   #default is False
   gateway_conf['forward_crc_error'] = True

@@ -14,11 +14,11 @@
 * GW_RESET_PIN - default 22
   * The physical pin number on the Raspberry Pi to which the concentrator's reset is connected. See the [README](README.md) file for a description and a list of common values.
 * GW_GPS optional - default False
-  * If true, use the hardware GPS. 
-  * If false, 
-    * use either fake gps if a location was configured in the TTN console, 
-    * otherwise try using fake gps with the reference location as set via environment variables, 
-    * otherwise don't send coordinates. 
+  * If true, use the hardware GPS.
+  * If false,
+    * use either fake gps if a location was configured in the TTN console,
+    * otherwise try using fake gps with the reference location as set via environment variables,
+    * otherwise don't send coordinates.
 * GW_GPS_PORT optional - default /dev/ttyAMA0
   * The UART to which the hardware GPS is connected to.
 * GW_REF_LATITUDE optional - default 0
@@ -29,6 +29,8 @@
   * The altitude to use for fake gps if the coordinates are not set in the TTN console.
 * GW_LOGGER optional - default false
   * Write a line to the terminal whenever a packet is received. ex: `08:54:37  INFO: [stats] received packet with valid CRC from mote: 26011C51 (fcnt=7)`
+* GW_PRINT_STATS optional - default true
+  * Print gateway statistics on the console. Set to false to reduce console verbosity.
 * GW_FWD_CRC_ERR optional - default false
   * Forward packets with an invalid CRC.
 * GW_FWD_CRC_VAL optional - default true.
@@ -52,7 +54,7 @@ All server variables are optional, but when a server is enabled, it is recommend
   Domain of the account server to fetch the information from
 * ROUTER_MQTT_ADDRESS optional
   Override the address of the MQTT broker to connect to - e.g. `router.eu.thethings.network:1883`
-  
+
 * SERVER_1_ENABLED optional - default false
 * SERVER_1_TYPE - default "semtech"
 * SERVER_1_ADDRESS
