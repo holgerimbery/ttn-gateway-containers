@@ -80,10 +80,18 @@ frequency_plan_url = os.getenv('FREQ_PLAN_URL', "https://%s/api/v2/frequency-pla
 Takes a router address as input, and returns it in the format expected for the packet forwarder configuration
 """
 def sanitize_router_address(address):
+  address_no_proto = ""
   splitted_by_protocol = address.split("://")
   if len(splitted_by_protocol) == 1:
-    return address
-  return splitted_by_protocol[1]
+    address_no_proto = address
+  else:
+    address_no_proto = splitted_by_protocol[1]
+
+  # Workaround as the account server returns mqtts ports which we can't connect to
+  address_no_proto.replace(":8883", ":1883")
+  address_no_proto.replace(":8882", ":1882")
+
+  return address_no_proto
 
 # Fetch config from TTN if TTN is enabled
 if(os.getenv('SERVER_TTN', "true")=="true"):
