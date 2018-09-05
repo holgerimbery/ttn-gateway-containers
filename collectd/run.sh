@@ -38,7 +38,7 @@ fi
 if [ -n "${GW_COLLECTD_INTERVAL}" ]
 then
   echo "*** Collectd interval: ${GW_COLLECTD_INTERVAL}"
-  sed -i "s/^#Interval .*/Interval \"${GW_COLLECTD_INTERVAL}\"/" "${Config}"
+  sed -i "s/^#Interval .*/Interval ${GW_COLLECTD_INTERVAL}/" "${Config}"
 fi
 
 if [ "${GW_BACKPLANE}" = "DBRGN" ]
