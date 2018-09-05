@@ -228,12 +228,13 @@ Once the new image is deployed, go to the resin.io dashboard for your devices an
 [Collectd](https://collectd.org/) will typically send its data to an InfluxDB/Grafana backend.  
 You will need to define the following variables in resin.io
 
-Name      	  	    | Value  
---------------------|--------------------------
-GW_COLLECTD_SERVER  | The IP address of the collectd server
-GW_BACKPLANE        | Set to "DBRGN" if you use the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane with sensors
-GW_TTN_FAN          | Set to "true" if you have a fan controlled by the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane
-GW_TARGET_TEMP      | Target for temperature regulation with the fan (Default 45°C)
+Name      	  	     | Value  
+---------------------|--------------------------
+GW_COLLECTD_SERVER   | The IP address of the collectd server
+GW_COLLECTD_INTERVAL | Interval in seconds for Collectd data collection (Default 10s)
+GW_BACKPLANE         | Set to "DBRGN" if you use the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane with sensors
+GW_TTN_FAN           | Set to "true" if you have a fan controlled by the [Coredump](https://github.com/dbrgn/ic880a-backplane/) backplane
+GW_TARGET_TEMP       | Target for temperature regulation with the fan (Default 45°C)
 
 # Docker setup
 If you do not want to use the [resin.io](https://resin.io/) services, you can run the exact same configuration directly on your Raspberry Pi.

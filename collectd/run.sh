@@ -35,6 +35,12 @@ else
   exec sleep 86400
 fi
 
+if [ -n "${GW_COLLECTD_INTERVAL}" ]
+then
+  echo "*** Collectd interval: ${GW_COLLECTD_INTERVAL}"
+  sed -i "s/^#Interval .*/Interval \"${GW_COLLECTD_INTERVAL}\"/" "${Config}"
+fi
+
 if [ "${GW_BACKPLANE}" = "DBRGN" ]
 then
   echo "*** Support for Dbrgn's backplane enabled"

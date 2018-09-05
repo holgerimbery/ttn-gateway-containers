@@ -40,6 +40,7 @@ services:
     restart: always
     environment:
       GW_COLLECTD_SERVER: "${GW_COLLECTD_SERVER}"
+      GW_COLLECTD_INTERVAL: "${GW_COLLECTD_INTERVAL}"
       GW_BACKPLANE: "${GW_BACKPLANE}"
       GW_TTN_FAN: "${GW_TTN_FAN}"
     volumes:
