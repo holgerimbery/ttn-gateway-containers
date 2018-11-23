@@ -123,6 +123,7 @@ Rising HF Board<br />http://www.risinghf.com/product/risinghf-iot-dicovery/?lang
 IMST backplane or Lite gateway<br />https://wireless-solutions.de/products/long-range-radio/lora_lite_gateway.html | 29 (untested)
 Coredump backplane<br />https://github.com/dbrgn/ic880a-backplane/<br />https://shop.coredump.ch/product/ic880a-lorawan-gateway-backplane/ | 22
 RAK backplane<br /> | 11
+Pi Supply IoT LoRa Gateway HAT for Raspberry Pi<br /> | 15
 
 
 If you get the message
