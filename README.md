@@ -1,4 +1,4 @@
-TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi.svg?branch=master)](https://travis-ci.org/AmedeeBulle/ttn-resin-gateway-rpi)
+TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-gateway-containers.svg?branch=master)](https://travis-ci.org/AmedeeBulle/ttn-gateway-containers)
 ======================
 
 # Contents
@@ -151,8 +151,8 @@ RESIN_HOST_CONFIG_dtoverlay   | pi3-miniuart-bt
 1. On your computer, clone this git repo. For example in a terminal on Mac or Linux type:
 
    ```bash
-   git clone https://github.com/AmedeeBulle/ttn-resin-gateway-rpi.git
-   cd ttn-resin-gateway-rpi/
+   git clone https://github.com/AmedeeBulle/ttn-gateway-containers.git
+   cd ttn-gateway-containers/
    ```
 2. Now, type the command that you'll see displayed in the edit control in the upper-right corner of the balenaCloud devices dashboard for your device. This command "connects" your local directory to the balenaCloud GIT service, which uses GIT to "receive" the gateway software from TTN, and it looks something like this:
 
@@ -269,8 +269,8 @@ From here, __you don't need root access anymore__.
 
 Clone this repository:
 ```
-$ git clone https://github.com/AmedeeBulle/ttn-resin-gateway-rpi.git
-$ cd ttn-resin-gateway-rpi/
+$ git clone https://github.com/AmedeeBulle/ttn-gateway-containers.git
+$ cd ttn-gateway-containers/
 ```
 
 There are two _docker-compose_ files:
