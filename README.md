@@ -62,6 +62,7 @@ Currently any Raspberry Pi with one of the following gateway boards, communicati
 * [LinkLabs Raspberry Pi "Hat"](http://link-labs.myshopify.com/products/lorawan-raspberry-pi-board)
 * [RisingHF IoT Dicovery](http://www.risinghf.com/product/risinghf-iot-dicovery/?lang=en)
 * [RAK831](http://www.rakwireless.com/en/WisKeyOSH/RAK831)
+* RAK833 PCIe LoRa Gateway Concentrator Module
 
 ## Prerequisites
 
