@@ -216,6 +216,10 @@ if(os.getenv('GW_PRINT_STATS', "true")=="true"):
 else:
   gateway_conf['stat_print'] = False
 
+if os.getenv('GW_PLATFORM'):
+  # Override default platform ("IMST + Rpi")
+  gateway_conf['platform'] = os.getenv('GW_PLATFORM')
+
 if(os.getenv('GW_FWD_CRC_ERR', "false")=="true"):
   #default is False
   gateway_conf['forward_crc_error'] = True
