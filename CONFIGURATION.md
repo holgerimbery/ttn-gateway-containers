@@ -11,6 +11,8 @@
   * The gateway owner's contact information. Will be overridden by the value from the TTN console.
 * GW_DESCRIPTION optional - default an empty string
   * A description of this gateway. Will be overridden by the value from the TTN console.
+* GW_PLATFORM - default `IMST + Rpi`
+  * Gateway platform.
 * GW_RESET_PIN - default 22
   * The physical pin number on the Raspberry Pi to which the concentrator's reset is connected. See the [README](README.md) file for a description and a list of common values.
 * GW_GPS optional - default False
