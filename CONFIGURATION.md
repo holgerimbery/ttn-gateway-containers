@@ -111,16 +111,3 @@ As long as `SERVER_TTN` is set to false, you can also:
 ## Note about boolean values
 
 Use `true` and `false` as lower case words to enable or disable features via environment variables. Any other format will not be interpreted correctly.
-
-# Logal debugging
-```
-docker run --device /dev/ttyAMA0:/dev/ttyAMA0 --device /dev/mem:/dev/mem --privileged -e GW_TYPE="imst-ic880a-spi" -e GW_DESCRIPTION="test gateway" -e GW_CONTACT_EMAIL="" -e GW_ID="" -e GW_KEY="" newforwarder
-
-
-```
-Make a copy of `Dockerfile.template` to `Dockerfile`.
-```
-FROM resin/raspberrypi-buildpack-deps
-...
-CMD ["bash"]
-```
