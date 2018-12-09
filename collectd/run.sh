@@ -49,6 +49,20 @@ then
   sed -i 's/##MCP3425## //' "${ConfigPython}"
 fi
 
+if [ "${GW_BME280}" = "true" ]
+then
+  echo "*** Support for BME280 enabled"
+  sed -i 's/##BME280## //' "${ConfigPython}"
+  if [ -n "${GW_BME280_ADDR}" ]
+  then
+    sed -i "s/BME280Address .*/BME280Address \"${GW_BME280_ADDR}\"/" "${ConfigPython}"
+  fi
+  if [ -n "${GW_BME280_SMBUS}" ]
+  then
+    sed -i "s/BME280SMBus .*/BME280SMBus ${GW_BME280_SMBUS}/" "${ConfigPython}"
+  fi
+fi
+
 if [ "${GW_TTN_FAN}" = "true" ]
 then
   echo "*** Fan monitoring enabled"
