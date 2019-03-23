@@ -115,14 +115,17 @@ if(os.getenv('SERVER_TTN', "true")=="true"):
 
   # Fetch the URL, if it fails try 30 seconds later again.
   config_response = ""
-  try:
-    req = urllib2.Request('https://%s/api/v2/gateways/%s' % (account_server_domain, my_gw_id))
-    req.add_header('Authorization', 'Key '+os.environ.get("GW_KEY"))
-    response = urllib2.urlopen(req, timeout=30)
-    config_response = response.read()
-  except urllib2.URLError as err: 
-    print ("Unable to fetch configuration from TTN. Are your GW_ID and GW_KEY correct?")
-    sys.exit(0)
+  while True:
+    try:
+      req = urllib2.Request('https://%s/api/v2/gateways/%s' % (account_server_domain, my_gw_id))
+      req.add_header('Authorization', 'Key '+os.environ.get("GW_KEY"))
+      response = urllib2.urlopen(req, timeout=30)
+      config_response = response.read()
+    except urllib2.URLError as err: 
+      print ("Unable to fetch configuration from TTN. Is the TTN API reachable from gateway? Are your GW_ID and GW_KEY correct? Retry       in 30s")
+      time.sleep(30)
+      continue
+    break
 
   # Parse config
   ttn_config = {}
