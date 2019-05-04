@@ -122,6 +122,7 @@ if(os.getenv('SERVER_TTN', "true")=="true"):
       response = urllib2.urlopen(req, timeout=30)
       config_response = response.read()
     except urllib2.URLError as err: 
+      print (err)
       print ("Unable to fetch configuration from TTN. Is the TTN API reachable from gateway? Are your GW_ID and GW_KEY correct? Retry       in 30s")
       time.sleep(30)
       continue
