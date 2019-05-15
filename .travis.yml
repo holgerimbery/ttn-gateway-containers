@@ -11,6 +11,7 @@ env:
     - GW_MACHINE_NAME=raspberrypi3
 
 language: python
+python: 3.6
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -32,6 +33,18 @@ script:
 deploy:
   skip_cleanup: true
   provider: script
-  script: ./scripts/deploy.sh
+  script: ./scripts/deploy_docker.sh
   on:
     all_branches: true
+
+jobs:
+  include:
+    - stage: balena
+      name: "Deploy to balenaCloud"
+      before_install: skip
+      install: skip
+      script: skip
+      deploy:
+        provider: script
+        script: ./scripts/deploy_balena.sh
+
