@@ -15,9 +15,13 @@ then
     chmod 0600 id_rsa
     ssh-add ./id_rsa
     ssh-keyscan git.balena-cloud.com >> ~/.ssh/known_hosts
+    # We don't like to operating in detached state
+    # There is a small risk to catch a more recent commit, which doesn't
+    # matter too much here
+    git checkout ${TRAVIS_BRANCH}
     # Monitoring backend to deploy: prometheus / collectd
     cp "docker-compose-${MONITORNG_BACKEND:-collectd}.yml" docker-compose.yml
-    git add .
+    git add docker-compose.yml
     git commit -m "Select monitoring backend for the balenaCloud images"
     if [ "${TRAVIS_BRANCH}" == "master" ]
     then
@@ -33,7 +37,7 @@ then
       for REMOTE in ${!BALENA_DEV_*}
       do
 	git remote add balena ${!REMOTE}
-	git push --force balena master
+	git push --force balena ${TRAVIS_BRANCH}:master
 	git remote remove balena
       done
     fi
