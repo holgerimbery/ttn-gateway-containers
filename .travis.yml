@@ -47,4 +47,6 @@ jobs:
       deploy:
         provider: script
         script: ./scripts/deploy_balena.sh
+        on:
+          all_branches: true
 
