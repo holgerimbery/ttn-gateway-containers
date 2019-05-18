@@ -20,7 +20,7 @@ then
     # matter too much here
     git checkout ${TRAVIS_BRANCH}
     # Monitoring backend to deploy: prometheus / collectd
-    cp "docker-compose-${MONITORNG_BACKEND:-collectd}.yml" docker-compose.yml
+    cp "docker-compose-${MONITORNG_BACKEND:-prometheus}.yml" docker-compose.yml
     git add docker-compose.yml
     git commit -m "Select monitoring backend for the balenaCloud images"
     if [ "${TRAVIS_BRANCH}" == "master" ]
