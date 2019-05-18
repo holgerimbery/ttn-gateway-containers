@@ -27,6 +27,7 @@ TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-ga
     - [Option 2: Re-Build the containers](#option-2-re-build-the-containers)
   - [Configure and run the TTN Gateway](#configure-and-run-the-ttn-gateway)
   - [Updates](#updates)
+- [Travis CI](#travis-vi)
 - [Credits](#credits)
 
 <!-- TOC END -->
@@ -324,6 +325,10 @@ $ git pull origin master
 $ docker-compose pull # or build
 $ docker-compose up
 ```
+
+# Travis CI
+You can automatically update your balenaCloud gateways when changes are pushed to GitHub!  
+More details in [Travis CI](TRAVIS.md)
 
 # Credits
 
