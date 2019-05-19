@@ -4,7 +4,7 @@ Continuous Integration with [Travis CI](https://travis-ci.org)
 This repository is configured to use [Travis CI](https://travis-ci.org) for testing, deployment to the Docker Hub as well as to the [balena](https://www.balena.io/) cloud.
 
 When a new commits are pushed to GitHub the following will happen:
-1. Testing: all containers are build;
+1. Testing: all containers are built;
 1. Docker deployment (optional): built containers are pushed to the Docker Hub;
 1. balenaCloud deployment (optional): repository is pushed to balenaCloud and devices are updated.
 
