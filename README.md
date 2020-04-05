@@ -3,6 +3,7 @@ TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-ga
 
 # Contents
 <!-- TOC START min:1 max:3 link:true update:false -->
+- [Modification in this fork](#modification)
 - [Introduction](#introduction)
   - [Difference between Poly-packet-forwarder and Multi-protocol-packet-forwarder](#difference-between-poly-packet-forwarder-and-multi-protocol-packet-forwarder)
 - [balenaCloud TTN Gateway Connector for Raspberry Pi](#balenacloud-ttn-gateway-connector-for-raspberry-pi)
@@ -31,6 +32,10 @@ TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-ga
 - [Credits](#credits)
 
 <!-- TOC END -->
+# Modification 
+- updated syntax to use most recent version of prometheus exporter
+- integration of balena ```wifi connect``` to change the wifi connection in the field.
+    - Please add: environment variable ```PORTAL_PASSPHRASE``` with a password to your Application Settiings 
 
 # Introduction
 This is a Docker setup for a TTN Gateway Connector on Raspberry Pi.  
