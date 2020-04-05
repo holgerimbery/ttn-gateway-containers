@@ -35,7 +35,8 @@ TTN Gateway Containers [![Build Status](https://travis-ci.org/AmedeeBulle/ttn-ga
 # Modification 
 - updated syntax to use most recent version of prometheus exporter
 - integration of balena ```wifi connect``` to change the wifi connection in the field.
-    - Please add: environment variable ```PORTAL_PASSPHRASE``` with a password to your Application Settiings 
+    - Please add: environment variable ```PORTAL_PASSPHRASE``` with a password to your Application Settings
+      [Repository for wifi-connect](https://github.com/balena-io/wifi-connect)
 
 # Introduction
 This is a Docker setup for a TTN Gateway Connector on Raspberry Pi.  
